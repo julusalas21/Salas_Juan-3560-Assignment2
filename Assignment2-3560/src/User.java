@@ -12,5 +12,7 @@ public interface User {
     public void follow(User user);
     public void addPost(String tweet);
     public boolean isGroup();
+    public void setUserPanel(UserViewPanel userViewPanel);
+    public UserViewPanel getUserPanel();
 
 }

@@ -76,6 +76,12 @@ public class AdminControlPanel {
                 addGroup();
             }
         });
+        openUserViewPanelBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openUserViewPanel();
+            }
+        });
 
         frame.pack();
     }
@@ -167,6 +173,20 @@ public class AdminControlPanel {
 
     public List<User> getUsers(){
         return users;
+    }
+    public void openUserViewPanel(){
+        selected=(DefaultMutableTreeNode) tree1.getLastSelectedPathComponent();
+        errorLabel.setText("");
+        if(selected.getUserObject() instanceof IsolatedUser){
+            User user=(IsolatedUser) selected.getUserObject();
+            UserViewPanel.getInstance(user);
+        }
+        else if(selected.getUserObject() instanceof CompositeUserGroup){
+            errorLabel.setText("Error: group is not a valid user");
+        }
+        else {
+            errorLabel.setText("Error: choose a valid user");
+        }
     }
 
 }

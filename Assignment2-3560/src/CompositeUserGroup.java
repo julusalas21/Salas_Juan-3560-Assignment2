@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompositeUserGroup implements User{
+    private UserViewPanel userPanel;
     private String GID=null;
     private List<User> users;
     private List<User> groups;
@@ -58,5 +59,15 @@ public class CompositeUserGroup implements User{
     @Override
     public boolean isGroup() {
         return true;
+    }
+
+    @Override
+    public void setUserPanel(UserViewPanel userViewPanel) {
+
+    }
+
+    @Override
+    public UserViewPanel getUserPanel() {
+        return null;
     }
 }

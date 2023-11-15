@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IsolatedUser implements User {
+    private UserViewPanel userPanel;
     private String UID=null;
     private List<User> FollowingList;
     private List<User> FollowersList;
@@ -56,5 +57,15 @@ public class IsolatedUser implements User {
     @Override
     public boolean isGroup() {
         return false;
+    }
+
+    @Override
+    public void setUserPanel(UserViewPanel userViewPanel) {
+        userPanel=userViewPanel;
+    }
+
+    @Override
+    public UserViewPanel getUserPanel() {
+        return userPanel;
     }
 }
