@@ -82,6 +82,40 @@ public class AdminControlPanel {
                 openUserViewPanel();
             }
         });
+        //error label will have a dual use as messages to the user
+        //will show analytics from analyticsVisitor
+        showUserTotalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TotalUsers total = new TotalUsers();
+                ConcreteVisitor concreteVisitor= new ConcreteVisitor();
+                errorLabel.setText(concreteVisitor.visit(total));
+            }
+        });
+        showGroupTotalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TotalGroups total = new TotalGroups();
+                ConcreteVisitor concreteVisitor= new ConcreteVisitor();
+                errorLabel.setText(concreteVisitor.visit(total));
+            }
+        });
+        showMessagesTotalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TotalMessages total = new TotalMessages();
+                ConcreteVisitor concreteVisitor= new ConcreteVisitor();
+                errorLabel.setText(concreteVisitor.visit(total));
+            }
+        });
+        showPositivePercentageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TotalPositive total = new TotalPositive();
+                ConcreteVisitor concreteVisitor= new ConcreteVisitor();
+                errorLabel.setText(concreteVisitor.visit(total));
+            }
+        });
 
         frame.pack();
     }
@@ -173,6 +207,9 @@ public class AdminControlPanel {
 
     public List<User> getUsers(){
         return users;
+    }
+    public List<User> getGroups(){
+        return groups;
     }
     public void openUserViewPanel(){
         selected=(DefaultMutableTreeNode) tree1.getLastSelectedPathComponent();

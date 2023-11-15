@@ -109,12 +109,12 @@ public class UserViewPanel implements Observer{
         }
         totalMessages++;
     }
-    public int getTotalMessages(){return totalMessages;}
-    public String getPositivePercentage(){
+    public static int getTotalMessages(){return totalMessages;}
+    public static Double getPositivePercentage(){
         if(totalMessages==0){
-            return "0%";
+            return (double) 0;
         }
-        return Double.toString(100*(double)totalPositiveWords/(double)totalMessages);
+        return (100*(double)totalPositiveWords/(double)totalMessages);
     }
 
     public static UserViewPanel getInstance(User user){
