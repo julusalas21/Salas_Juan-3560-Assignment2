@@ -94,8 +94,10 @@ public class UserViewPanel implements Observer{
     private void tweetPost(){
         String tweet=newTweetMsg.getText();
         errorLabel.setText("");
-        if(tweet.equals(""))
+        if(tweet.equals("")) {
             errorLabel.setText("Error: Empty tweet");
+            return;
+        }
         else{
             user.addPost(user.toString()+": "+tweet);
             update(user);
