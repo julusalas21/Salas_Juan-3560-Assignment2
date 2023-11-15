@@ -70,6 +70,13 @@ public class AdminControlPanel {
             }
         });
 
+        addGroupBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addGroup();
+            }
+        });
+
         frame.pack();
     }
     private void addUser(){
@@ -77,7 +84,7 @@ public class AdminControlPanel {
         selected=(DefaultMutableTreeNode) tree1.getLastSelectedPathComponent();
         errorLabel.setText("");
         if(selected==null){
-            errorLabel.setText("Error: Enter a valid UserID");
+            errorLabel.setText("Error: Select a valid node");
         }
         else {
             String userid=newUID.getText().trim();
@@ -105,6 +112,47 @@ public class AdminControlPanel {
                     errorLabel.setText("Error: can only add users to a Group");
                 }
             }
+            else
+            {errorLabel.setText("Error: Enter a valid UserID");}
+        }
+    }
+
+    private void addGroup(){
+        template=(DefaultTreeModel) tree1.getModel();
+        selected=(DefaultMutableTreeNode) tree1.getLastSelectedPathComponent();
+        errorLabel.setText("");
+        if(selected==null){
+            errorLabel.setText("Error: select a valid node");
+        }
+        else {
+            String userid=newGID.getText().trim();
+            if(!userid.equals("")){
+                if (selected.getUserObject() instanceof CompositeUserGroup){
+                    for(int i=0;i< users.size();i++){
+                        if(users.get(i).getUID().equalsIgnoreCase(userid)){
+                            errorLabel.setText("Error: not a unique id");
+                            return;
+                        }
+                    }
+                    for(int i=0;i< groups.size();i++){
+                        if(groups.get(i).getUID().equalsIgnoreCase(userid)){
+                            errorLabel.setText("Error: not a unique id");
+                            return;
+                        }
+                    }
+                    groups.add(new CompositeUserGroup(userid));
+                    addGroup=new DefaultMutableTreeNode(groups.get(groups.size()-1));
+                    template.insertNodeInto(addGroup,selected,selected.getChildCount());
+                    template.reload();
+                    errorLabel.setText("");
+                }
+                else{
+                    errorLabel.setText("Error: cannot add Group into user");
+                }
+            }
+            else{
+                errorLabel.setText("Error: must enter a GroupID");
+            }
         }
     }
 
@@ -115,6 +163,10 @@ public class AdminControlPanel {
             initializedObject=new AdminControlPanel();
         }
         return initializedObject;
+    }
+
+    public List<User> getUsers(){
+        return users;
     }
 
 }
