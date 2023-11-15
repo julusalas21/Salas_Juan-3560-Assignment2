@@ -1,13 +1,38 @@
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminControlPanel {
 
     private JPanel rootPanel;
-    private JButton helloButton;
+    private DefaultTreeModel template;
+    private JTree tree1;
+
+    private DefaultMutableTreeNode selected;
+    private DefaultMutableTreeNode addUser;
+    private DefaultMutableTreeNode addGroup;
+
+    private List<User> users;
+    private List<User> groups;
+
+    private JTextField newUID;
+    private JTextField newGID;
+    private JButton openUserViewPanelBtn;
+    private JButton showUserTotalButton;
+    private JButton showGroupTotalButton;
+    private JButton showMessagesTotalButton;
+    private JButton showPositivePercentageButton;
+    private JButton addUserBtn;
+    private JButton addGroupBtn;
+    private JLabel errorLabel;
+    //private JButton helloButton;
     private JLabel twitterLabel;
+
     private static AdminControlPanel initializedObject=null;
     private JFrame frame;
 
@@ -21,20 +46,66 @@ public class AdminControlPanel {
     private void initialize(){
         frame = new JFrame("twitter");
         frame.setContentPane(rootPanel);
-        frame.setPreferredSize(new Dimension(500,500));
+        frame.setPreferredSize(new Dimension(600,500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocation(500,500);
+
+        users=new ArrayList<User>();
+        groups=new ArrayList<User>();
 
         ImageIcon icon = new ImageIcon("src/twitterLogo.png");
         frame.setIconImage(icon.getImage());
 
-        helloButton.addActionListener(new ActionListener() {
+        //setting up the tree
+        CompositeUserGroup rootgroup=new CompositeUserGroup("root");
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(rootgroup);
+        template=new DefaultTreeModel(root);
+        tree1.setModel(template);
+
+        //action listeners
+        addUserBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                twitterLabel.setText("Its twitter");
+                addUser();
             }
         });
+
         frame.pack();
+    }
+    private void addUser(){
+        template=(DefaultTreeModel) tree1.getModel();
+        selected=(DefaultMutableTreeNode) tree1.getLastSelectedPathComponent();
+        errorLabel.setText("");
+        if(selected==null){
+            errorLabel.setText("Error: Enter a valid UserID");
+        }
+        else {
+            String userid=newUID.getText().trim();
+            if(!userid.equals("")){
+                if (selected.getUserObject() instanceof CompositeUserGroup){
+                    for(int i=0;i< users.size();i++){
+                        if(users.get(i).getUID().equalsIgnoreCase(userid)){
+                            errorLabel.setText("Error: not a unique id");
+                            return;
+                        }
+                    }
+                    for(int i=0;i< groups.size();i++){
+                        if(groups.get(i).getUID().equalsIgnoreCase(userid)){
+                            errorLabel.setText("Error: not a unique id");
+                            return;
+                        }
+                    }
+                    users.add(new IsolatedUser(userid));
+                    addUser=new DefaultMutableTreeNode(users.get(users.size()-1));
+                    template.insertNodeInto(addUser,selected,selected.getChildCount());
+                    template.reload();
+                    errorLabel.setText("");
+                }
+                else{
+                    errorLabel.setText("Error: can only add users to a Group");
+                }
+            }
+        }
     }
 
     //Only way to get instance using Singleton's
