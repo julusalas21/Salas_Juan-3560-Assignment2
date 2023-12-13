@@ -6,11 +6,23 @@ public class CompositeUserGroup implements User{
     private String GID=null;
     private List<User> users;
     private List<User> groups;
-
+    private long creationTime;
+    private long lastUpdate;
     public CompositeUserGroup(String gid){
         GID=gid;
         users=new ArrayList<User>();
         groups=new ArrayList<User>();
+        creationTime=System.currentTimeMillis();
+        lastUpdate=creationTime;
+    }
+    public void timeStamp(){
+        System.out.println("Group created at: "+creationTime);
+    }
+    public long getLastUpdate(){
+        return lastUpdate;
+    }
+    public void setLastUpdate(long time){
+        lastUpdate=time;
     }
     public void addUser(User user){
         users.add(user);

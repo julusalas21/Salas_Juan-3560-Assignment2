@@ -30,6 +30,8 @@ public class AdminControlPanel {
     private JButton addUserBtn;
     private JButton addGroupBtn;
     private JLabel errorLabel;
+    private JButton validateUsrsBtn;
+    private JButton lastUpdateButton;
     //private JButton helloButton;
     private JLabel twitterLabel;
 
@@ -117,7 +119,90 @@ public class AdminControlPanel {
             }
         });
 
+        validateUsrsBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                validateIds();
+            }
+        });
+        lastUpdateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (users.size() == 0) {
+                    System.out.println("No Users created!");
+                }
+                else {
+                    getLastUpdated();
+                }
+            }
+        });
+
         frame.pack();
+    }
+    private void getLastUpdated(){
+        User lastUpdated=users.get(0);
+        for(int i=0;i<users.size();i++){
+            if(users.get(i).getLastUpdate()>lastUpdated.getLastUpdate()){
+                lastUpdated=users.get(i);
+            }
+        }
+        System.out.println("Last user updated: "+lastUpdated.getUID());
+        System.out.println("At: "+lastUpdated.getLastUpdate());
+    }
+
+    private void validateIds(){
+        List<User> usersNotValid=new ArrayList<User>();
+        List<User> groupsNotValid=new ArrayList<User>();
+        for(int i=0;i< users.size();i++){
+            String uid=users.get(i).getUID();
+            for(int j=0;j< users.size();j++){
+                if(j==i){
+                    continue;
+                }
+                if(users.get(j).getUID().equals(uid)){
+                    usersNotValid.add(users.get(j));
+                }
+            }
+            for (char c : uid.toCharArray()) {
+                if (Character.isWhitespace(c)) {
+                    usersNotValid.add(users.get(i));
+                }
+            }
+        }
+        for(int i=0;i< groups.size();i++){
+            String uid=groups.get(i).getUID();
+            for(int j=0;j< groups.size();j++){
+                if(j==i){
+                    continue;
+                }
+                if(groups.get(j).getUID().equals(uid)){
+                    groupsNotValid.add(groups.get(j));
+                }
+            }
+            for (char c : uid.toCharArray()) {
+                if (Character.isWhitespace(c)) {
+                    groupsNotValid.add(groups.get(i));
+                }
+            }
+        }
+        if(usersNotValid.size()==0){
+            System.out.println("All user ids valid!");
+        }
+        else{
+            System.out.println("User ids not valid:");
+            for(int i=0;i<usersNotValid.size();i++){
+                System.out.println(usersNotValid.get(i).getUID());
+            }
+        }
+        if(groupsNotValid.size()==0){
+            System.out.println("All group ids valid!");
+        }
+        else{
+            System.out.println("Group ids not valid:");
+            for(int i=0;i<groupsNotValid.size();i++){
+                System.out.println(groupsNotValid.get(i).getUID());
+            }
+        }
     }
     private void addUser(){
         template=(DefaultTreeModel) tree1.getModel();

@@ -14,5 +14,7 @@ public interface User {
     public boolean isGroup();
     public void setUserPanel(UserViewPanel userViewPanel);
     public UserViewPanel getUserPanel();
-
+    public void timeStamp();
+    public long getLastUpdate();
+    public void setLastUpdate(long time);
 }

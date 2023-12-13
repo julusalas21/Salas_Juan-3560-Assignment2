@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.*;
 
 public class IsolatedUser implements User {
     private UserViewPanel userPanel;
@@ -7,11 +8,24 @@ public class IsolatedUser implements User {
     private List<User> FollowingList;
     private List<User> FollowersList;
     private List<String> posts;
+    private long creationTime;
+    private long lastUpdate;
     public IsolatedUser(String ID){
         UID=ID;
         FollowingList=new ArrayList<User>();
         FollowersList=new ArrayList<User>();
         posts=new ArrayList<String>();
+        creationTime=System.currentTimeMillis();
+        lastUpdate=creationTime;
+    }
+    public void timeStamp(){
+        System.out.println("User created at: "+creationTime);
+    }
+    public long getLastUpdate(){
+        return lastUpdate;
+    }
+    public void setLastUpdate(long time){
+        lastUpdate=time;
     }
 
     @Override

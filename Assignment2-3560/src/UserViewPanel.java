@@ -131,6 +131,7 @@ public class UserViewPanel implements Observer{
         list = new JList<String>(feed.toArray(new String[feed.size()]));
         tweetsNewsFeed.setViewportView(list);
         list.setLayoutOrientation(JList.VERTICAL);
+        u.setLastUpdate(System.currentTimeMillis());
     }
 
     @Override
@@ -138,6 +139,7 @@ public class UserViewPanel implements Observer{
         for (int i = 0; i < user.getFollowers().size(); ++i) {
             user.getFollowers().get(i).addPost(user.toString()+": "+tweet);
             user.getFollowers().get(i).getUserPanel().update(user);
+            user.setLastUpdate(System.currentTimeMillis());
         }
     }
 
